@@ -22,6 +22,13 @@ public class ExpenseServiceimpl implements ExpenseService {
     private final ModelMapper modelMapper;
 
     @Override
+    public void deleteExpenseByExpenseId(String expenseId) {
+        ExpenseEntity expenseEntity = getExpenseEntity(expenseId);
+        log.info("Printing the expense entity {}", expenseEntity);
+        expenseRepository.delete(expenseEntity);
+    }
+
+    @Override
     public List<ExpenseDTO> getAllExpenses(){
         //call therepository method
         List<ExpenseEntity> list = expenseRepository.findAll();
@@ -36,10 +43,14 @@ public class ExpenseServiceimpl implements ExpenseService {
 
     @Override
     public ExpenseDTO getExpenseByExpenseId(String expenseId) {
-        ExpenseEntity expenseEntity = expenseRepository.findByExpenseId(expenseId).
-                orElseThrow(() -> new ResourceNotFoundException("Expense not found for the expeense id " + expenseId));
+        ExpenseEntity expenseEntity = getExpenseEntity(expenseId);
         log.info("Printing the expense entity details {}", expenseEntity);
         return mapToExpenseDTO(expenseEntity);
+    }
+
+    private ExpenseEntity getExpenseEntity(String expenseId) {
+       return  expenseRepository.findByExpenseId(expenseId).
+                orElseThrow(() -> new ResourceNotFoundException("Expense not found for the expeense id " + expenseId));
     }
 
     private ExpenseDTO mapToExpenseDTO(ExpenseEntity expenseEntity) {
