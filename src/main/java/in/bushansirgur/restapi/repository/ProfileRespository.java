@@ -4,7 +4,9 @@ import in.bushansirgur.restapi.dto.ProfileDTO;
 import in.bushansirgur.restapi.entity.ProfileEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ProfileRespository extends JpaRepository<ProfileEntity, Long> {
+import java.util.Optional;
 
+public interface ProfileRespository extends JpaRepository<ProfileEntity, Long> {
+      Optional<ProfileEntity> findByEmail(String email);
 
 }
